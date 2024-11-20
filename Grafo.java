@@ -173,4 +173,179 @@ public class Grafo {
             }
         }
     }
+
+    public void coloracaoSequencial(){ // Função que efetua a coloração dos vértices de forma sequencial
+		int k = 0;
+		float cores[][] = new float[n][n]; // Matriz que armazena as cores e quais vértices pertencem a cada cor
+
+		for (int i=0;i<n;i++){
+			for (int j=0;j<n;j++){
+				cores[i][j] = -1;
+			}
+		}
+
+        // Efetua a coloração sequencial em si
+		for (int i=0;i<n;i++){
+			while (true){
+				boolean flag = true;
+				for (int j=0;j<n;j++){
+					if (adj[i][j] != 0){
+						int cont = 0;
+						while (cores[k][cont] != -1){
+							if (cores[k][cont] == j)
+								flag = false;
+							cont++;
+						}
+					}
+				}
+				if (flag){
+					cont = 0;
+										
+					while (cores[k][cont] != -1){
+						cont++;
+					}
+					cores[k][cont] = i;
+					break;
+				}
+				else {
+					k++;
+				}
+			}
+			k = 0;
+		}
+
+        // Print das cores e seus vértices
+        cont = 0;
+		for (int i=0;i<n;i++){
+			if (cores[i][0] != -1){
+                cont++;
+			    System.out.println("Vertices da partição " + i);
+			    for (int j=0;j<n;j++){
+				    if (cores[i][j] != -1){
+					    System.out.print(cores[i][j] + " ");
+				    }
+			    }
+			    System.out.println();
+		    }
+		}
+        System.out.println("Quantidade total de partições: " + cont);
+	}
+
+    public void grauVertices(){ // Função que verifica o grau de cada vértice do grafo
+        int grau[] = new int[n];
+
+        for (int i=0;i<n;i++)
+            grau[i] = 0;
+
+        // Contagem das arestas dos vértices
+        for (int i=0;i<n;i++)
+            for (int j=0;j<n;j++)
+                if (adj[i][j] != 0)
+                    grau[i]++;
+            
+
+        for (int i=0;i<n;i++)
+            System.out.println("Grau do vértice " + i + ": " + grau[i]);
+    }
+
+    public boolean caminhoEuleriano(){
+        int qtde = 0, grau, i = 0, j;
+        while ((qtde <= 2) && (i < n)){
+            grau = 0;
+            for (j=0; j < n; j++)
+                grau += adj[i][j];
+            if ((grau % 2) == 1) qtde++;
+            i++;
+        }
+        if (qtde > 2) 
+            return false;
+        else 
+            return true;
+    }
+
+    public void colocaraoArestas(){ // Função que efetua coloração das arestas
+		int k;
+		int cores[][][] = new int[n][n][2]; // Matriz que armazena as arestas de cada partição
+		int vertices[][] = new int[n][n]; // Matriz auxiliar 
+
+		for (int i=0;i<n;i++)
+			for (int j=0;j<n;j++)
+				cores[i][j][0] = -1;
+			
+		for (int i=0;i<n;i++)
+			for (int j=0;j<n;j++)
+				vertices[i][j] = -1;
+			
+		// Coloração
+		for (int i=0;i<n;i++){
+			for (int j=i+1;j<n;j++){
+				if (adj[i][j] != 0){ // Caso tenha aresta entre os vertices
+
+					// Verfica que cor tem livre 
+					m = 0;
+					while (vertices[m][0] != -1) { 
+						boolean flag = true;
+						int n = 0;
+						while (vertices[m][n] != -1){
+							if (vertices[m][n] == i || vertices[m][n] == j){
+								flag = false;
+								break;
+							}
+							n++;
+						}
+						if (flag)
+							break;
+						else
+							m++;
+					}
+					k = m;
+					
+                    // Coloca as arestas na matriz
+					int cont = 0;
+					while (cores[k][cont][0] != -1)
+						cont++;
+					cores[k][cont][0] = i;
+					cores[k][cont][1] = j;
+					
+                    // Coloca os vertices na matriz auxiliar
+					boolean flagI = true, flagJ = true;
+					cont = 0;
+					while (vertices[k][cont] != -1){
+						if (vertices[k][cont] == i)
+							flagI = false;
+						if (vertices[k][cont] == j)
+							flagJ = false;
+						cont++;
+					}
+					if (flagI)
+						vertices[k][cont] = i;
+					if (flagJ){
+						if (flagI)
+							vertices[k][cont+1] = j;
+						else
+							vertices[k][cont] = j;
+					}
+				}
+			}
+		}
+        // Print das arestas 
+        cont = 0;
+		for (int i=0;i<n;i++){
+			if (cores[i][0][0] != -1){
+                cont++;
+				System.out.println("Arestas da partição " + i);
+				System.out.print("{");
+				for (int j=0;j<n;j++){
+					if (cores[i][j][0] != -1)
+						System.out.print("{" + cores[i][j][0] + "," + cores[i][j][1] + "}");
+					if (j < n-1)
+						if (cores[i][j+1][0] != -1)
+							System.out.print(",");
+				}
+				System.out.println("}");
+			}
+		}	
+        System.out.println("Quantidade total de partições: " + cont);
+	}
+        
 }
