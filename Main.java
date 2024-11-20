@@ -7,15 +7,12 @@
 // 21/09/2024 - Victor: Criação do arquivo grafo.txt e modelagem do grafo
 // 24/09/2024 - Pedro: Criação do menu, opções 1, 3, 4, 5, 6, 8, 9, 10 feitas, criação da classe Grafo com 
 // metodos para as opções do menu
-// 26/09/2024 - Pedro: Opções 2 e 7, metodos da classe Grafo relacionados a rotulos, relatório e repositorio do github
-
-
-// FALTA:
-// opcao 2
-// historico
-// print dos teste opcao 2
-// colocar tudo no github
-
+// 26/09/2024 - Pedro: Opções 2 e 7, metodos da classe Grafo relacionados a rotulos, relatório e repositorio 
+// do github
+// 18/11/2024 - Pedro: Novas opções 10 e 11, metodos da classe Grafo relacionadas a coloração de vértices e grau
+// dos vértices
+// 19/11/2024 - Pedro: Opções 12, 13 metodos relacionados a coloração de arestas e verificação do grafo euleriano,
+// finalização do projeto, relatório e vídeo
 
 
 
@@ -47,11 +44,15 @@ public class Main {
             System.out.println("7) Mostrar conteúdo do arquivo");
             System.out.println("8) Mostrar grafo");
             System.out.println("9) Apresentar conexidade do grafo");
-            System.out.println("10) Encerrar aplicação");
+            System.out.println("10) Coloração dos vértices");
+            System.out.println("11) Grau dos vértices");
+            System.out.println("12) Verifica se o grafo é Euleriano");
+            System.out.println("13) Coloração das arestas");
+            System.out.println("14) Encerrar aplicação");
             
             escolha = scanner.nextInt();
             scanner.nextLine();
-            while(escolha < 1 || escolha > 10){ // Loop que impede o usuario de inserir uma opção inválida
+            while(escolha < 1 || escolha > 14){ // Loop que impede o usuario de inserir uma opção inválida
                 System.out.println("Opção inválida, digite uma das opções do menu");
                 escolha = scanner.nextInt();
                 scanner.nextLine();
@@ -81,7 +82,7 @@ public class Main {
                     System.out.println("Não foi possivel ler o arquivo");
                 }
             }
-            if (escolha == 2){
+            else if (escolha == 2){
                  try{
                     // Escreve no arquivo grafo.txt as informações do grafo em memória
                     PrintWriter arquivo = new PrintWriter(new FileWriter("Projeto\\\\\\\\grafo.txt"));
@@ -94,7 +95,7 @@ public class Main {
                  }
                 
             }
-            if (escolha == 3 && check){
+            else if (escolha == 3 && check){
                 // Insere um novo vertice no grafo
                 System.out.println("Digite o nome do jogo: ");
                 String nome = scanner.nextLine();
@@ -102,7 +103,7 @@ public class Main {
 
                 System.out.println("Vertice adicionado com sucesso");
             }
-            if (escolha == 4 && check){
+            else if (escolha == 4 && check){
                 // Insere uma nova aresta no grafo
                 System.out.println("Digite o primeiro vertice da aresta: ");
                 int v1 = scanner.nextInt();
@@ -116,7 +117,7 @@ public class Main {
                 grafo.insereA(v1, v2, a);
                 System.out.println("Aresta inserida com sucesso");
             }
-            if (escolha == 5 && check){ 
+            else if (escolha == 5 && check){ 
                 // Remove um vertice do grafo
                 System.out.println("Digite o vertice: ");
                 int v = scanner.nextInt();
@@ -124,7 +125,7 @@ public class Main {
                 grafo.removeVertice(v);
                 System.out.println("Vertice removido com sucesso");
             }
-            if (escolha == 6 && check){
+            else if (escolha == 6 && check){
                 // Remove uma aresta do grafo
                 System.out.println("Digite o primeiro vertice da aresta: ");
                 int v1 = scanner.nextInt();
@@ -135,7 +136,7 @@ public class Main {
                 grafo.removeA(v1, v2);
                 System.out.println("Aresta removida com sucesso");
             }
-            if (escolha == 7){
+            else if (escolha == 7){
                 try{
                     // Lê o arquivo e printa as informações dele
                     Scanner scannerT = new Scanner(new File("Projeto\\\\grafo.txt"));
@@ -165,11 +166,11 @@ public class Main {
                     System.out.println("Não foi possivel ler o arquivo");
                 }
             }
-            if (escolha == 8 && check){
+            else if (escolha == 8 && check){
                 // Mostra o conteúdo do grafo em forma de matriz de adjacência e os rotulos dos vertices
                 grafo.show();
             }
-            if (escolha == 9 && check){
+            else if (escolha == 9 && check){
                 // Mostra a conexidade do grafo
                 if (grafo.conexo() == 0)
                     System.out.println("Grafo é conexo");
@@ -177,10 +178,32 @@ public class Main {
                     System.out.println("Grafo é não conexo");
 
             }
-            if (escolha == 10){
+            else if (escolha == 10 && check){
+                // Mostra a coloração dos vértices 
+                grafo.coloracaoSequencial();
+            }
+            else if (escolha == 11 && check){
+                // Mostra o grau dos vértices
+                grafo.grauVertices();
+            }
+            else if (escolha == 12 && check){
+                // Mostra se o grafo é Euleriano ou não
+                if (grafo.caminhoEuleriano())
+                    System.out.println("Grafo é Euleriano");
+                else 
+                    System.out.println("Grafo não é Euleriano");
+            }
+            else if (escolha == 13 && check){
+                // Mostra a coloração das arestas
+                grafo.colocaraoArestas();
+            }
+            else if (escolha == 14){
                 // Encerra o programa
                 System.out.println("Programa encerrado");
                 break;
+            }
+            else {
+                System.out.println("Grafo ainda não criado");
             }
         }
     }
